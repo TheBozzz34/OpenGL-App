@@ -51,17 +51,10 @@ std::chrono::time_point<std::chrono::steady_clock> lastTime = std::chrono::stead
 int main()
 {
 	std::cout << "MAIN::START" << std::endl;
-	// Create resources folder
-	CreateDirectoryA("resources", NULL);
+	
 
-	// Extract resources
-	extractFile("resources\\Antonio-Bold.ttf", Antonio_Bold_ttf, Antonio_Bold_ttf_len);
-	extractFile("resources\\text.vs", text_vs, text_vs_len);
-	extractFile("resources\\text.fs", text_fs, text_fs_len);
-
-	// Verify the extraction
-	if (GetFileAttributesA("resources\\Antonio-Bold.ttf") == INVALID_FILE_ATTRIBUTES || GetFileAttributesA("resources\\text.vs") == INVALID_FILE_ATTRIBUTES || GetFileAttributesA("resources\\text.fs") == INVALID_FILE_ATTRIBUTES) {
-		std::cout << "ERROR::MAIN: Failed to extract resources" << std::endl;
+	if (setupResources() != 0) {
+		std::cout << "ERROR::MAIN: Failed to setup resources" << std::endl;
 		return -1;
 	}
 
@@ -96,7 +89,7 @@ int main()
 
 	// OpenGL state
 	// ------------
-	glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE); 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

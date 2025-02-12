@@ -9,4 +9,6 @@ void extractFile(const std::string& path, unsigned char* data, unsigned int leng
 // Gets the full path of a file
 std::string getFullPath(const std::string& filename);
 
+int setupResources();
+
 #endif // FILEUTILS_H
