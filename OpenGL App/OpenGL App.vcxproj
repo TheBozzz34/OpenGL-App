@@ -162,6 +162,7 @@
     <ClCompile Include="resources.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="color_macros.h" />
     <ClInclude Include="FileUtils.h" />
     <ClInclude Include="GLUtils.h" />
     <ClInclude Include="resources.h" />

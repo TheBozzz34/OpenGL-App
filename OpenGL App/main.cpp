@@ -18,6 +18,8 @@
 #include "resources.h"
 #include "GLUtils.h"
 #include "FileUtils.h"
+#include "color_macros.h"
+
 
 #include <windows.h>
 #include <limits>
@@ -34,13 +36,6 @@ void RenderText(Shader& shader, std::string text, float x, float y, float scale,
 const unsigned int SCR_WIDTH = GetSystemMetrics(SM_CXSCREEN);
 const unsigned int SCR_HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
-/// Holds all state information relevant to a character as loaded using FreeType
-struct Character {
-	unsigned int TextureID; // ID handle of the glyph texture
-	glm::ivec2   Size;      // Size of glyph
-	glm::ivec2   Bearing;   // Offset from baseline to left/top of glyph
-	unsigned int Advance;   // Horizontal offset to advance to next glyph
-};
 
 std::map<GLchar, Character> Characters;
 unsigned int VAO, VBO;
@@ -51,18 +46,6 @@ int fps = 0;
 
 std::chrono::time_point<std::chrono::steady_clock> lastTime = std::chrono::steady_clock::now();
 
-void CalculateFrameRate() {
-	auto currentTime = std::chrono::steady_clock::now();
-
-	const auto elapsedTime = std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime - lastTime).count();
-	++_fpsCount;
-
-	if (elapsedTime > 1000000000) {
-		lastTime = currentTime;
-		fps = _fpsCount;
-		_fpsCount = 0;
-	}
-}
 
 
 int main()
@@ -89,9 +72,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-#ifdef __APPLE__
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+
 
 	// glfw window creation
 	// --------------------
@@ -226,14 +207,16 @@ int main()
 
 		// render
 		// ------
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		//glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		setClearColor(COLOR_RED);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		RenderText(shader, "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-		RenderText(shader, "(C) LearnOpenGL.com", SCR_WIDTH - 200.0f, SCR_HEIGHT - 25.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
+		std::string text = "Hello, World!";
+
+		RenderText(shader, text, (SCR_WIDTH-GetTextWidth(text, 1.0f))/2, SCR_HEIGHT / 2, 1.0f, hexToVec3(COLOR_WHITE));
 
 		// Render fps
-		RenderText(shader, fmt::format("FPS: {}", fps), 25.0f, SCR_HEIGHT - 25.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
+		RenderText(shader, fmt::format("FPS: {}", fps), 10, 10, 1.0f, hexToVec3(COLOR_WHITE));
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
