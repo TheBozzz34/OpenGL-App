@@ -155,11 +155,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="GLUtils.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="resources.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FileUtils.h" />
+    <ClInclude Include="GLUtils.h" />
     <ClInclude Include="resources.h" />
     <ClInclude Include="shader.h" />
   </ItemGroup>

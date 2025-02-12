@@ -16,6 +16,8 @@
 
 #include "shader.h"
 #include "resources.h"
+#include "GLUtils.h"
+#include "FileUtils.h"
 
 #include <windows.h>
 #include <limits>
@@ -23,14 +25,6 @@
 #include <fmt/format.h>
 
 
-
-void extractFile(const std::string& path, unsigned char* data, unsigned int length) {
-	std::ofstream file(path, std::ios::binary);
-	if (file.is_open()) {
-		file.write(reinterpret_cast<const char*>(data), length);
-		file.close();
-	}
-}
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -51,14 +45,6 @@ struct Character {
 std::map<GLchar, Character> Characters;
 unsigned int VAO, VBO;
 
-std::string getFullPath(const std::string& filename) {
-	char buffer[MAX_PATH];
-	DWORD result = GetFullPathNameA(filename.c_str(), MAX_PATH, buffer, nullptr);
-	if (result == 0) {
-		return ""; // Error occurred
-	}
-	return std::string(buffer, result);
-}
 
 int _fpsCount = 0;
 int fps = 0;
